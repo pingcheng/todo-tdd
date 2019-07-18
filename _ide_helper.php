@@ -17335,7 +17335,7 @@ namespace  {
 
     class Response extends \Illuminate\Support\Facades\Response {}
 
-    class Route extends \Illuminate\Support\Facades\Route {}
+    class Route extends Illuminate\Support\Facades\Route {}
 
     class Schema extends \Illuminate\Support\Facades\Schema {}
 
