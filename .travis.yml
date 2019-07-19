@@ -13,7 +13,9 @@ matrix:
 before_script:
   - travis_retry composer self-update
   - travis_retry composer install --prefer-source --no-interaction
+  - cp .env.sample .env
   - php artisan key:generate
+  - touch database/database.sqlite
 
 script:
   - vendor/bin/phpunit
