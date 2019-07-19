@@ -68,12 +68,6 @@ class Handler extends ExceptionHandler
                     'data' => $exception->errors()
                 ], 422);
 
-            case ApiException::class:
-                return response()->json([
-                    'code' => $exception->getCode(),
-                    'data' => $exception->getMessage(),
-                ], $exception->getCode());
-
             case AuthenticationException::class:
                 return response()->json([
                     'code' => 401,
@@ -85,12 +79,19 @@ class Handler extends ExceptionHandler
                    'data' => 'model is not found',
                    'code' => 404,
                 ], 404);
-
-            default:
-                return response()->json([
-                'data' => 'unknown error',
-                'code' => 500,
-            ], 500);
         }
+
+
+        if (is_a($exception, ApiException::class)) {
+            return response()->json([
+                'code' => $exception->getCode(),
+                'data' => $exception->getMessage(),
+            ], $exception->getCode());
+        }
+
+        return response()->json([
+            'data' => 'unknown error',
+            'code' => 500,
+        ], 500);
     }
 }

@@ -18,10 +18,16 @@ class TodoListTest extends TestCase
      */
     public function a_todo_can_be_added_to_the_list(): void
     {
-        $response = $this->actingAs($this->user())->post('todo', $this->data());
+        $this->withoutExceptionHandling();
+
+        $user = $this->user();
+        $response = $this->actingAs($user)->post('todo', $this->data());
 
         $response->assertOk();
         $this->assertCount(1, Todo::all());
+
+        $todo = Todo::first();
+        $this->assertEquals($user->id, $todo->user_id);
     }
 
     /**
@@ -82,6 +88,26 @@ class TodoListTest extends TestCase
 
         $response->assertNotFound();
         $this->assertEquals(0, Todo::count());
+    }
+
+    /**
+     * @test
+     */
+    public function a_todo_only_can_be_updated_by_its_owner(): void
+    {
+        $user = $this->user();
+        $attacker = $this->user();
+
+        $this->actingAs($user)->post('todo', $this->data());
+        $todo = Todo::first();
+        $this->assertNotNull($todo);
+
+        $response = $this->actingAs($attacker)->patch("todo/{$todo->id}", $this->data([
+            'content' => 'new content',
+        ]));
+        $response->assertForbidden();
+        $todo->refresh();
+        $this->assertEquals($this->data()['content'], $todo->content);
     }
 
     /**
