@@ -117,6 +117,24 @@ class TodoListTest extends TestCase
     {
         $result = $this->post('todo', $this->data());
         $result->assertUnauthorized();
+        $this->assertEquals(0, Todo::count());
+    }
+
+    /**
+     * @test
+     */
+    public function visitor_cannot_update_a_todo(): void
+    {
+        $this->actingAs($this->user())->post('todo', $this->data());
+        auth()->logout();
+
+        $response = $this->patch('todo/123', [
+            'content' => 'good'
+        ]);
+        $todo = Todo::first();
+
+        $response->assertUnauthorized();
+        $this->assertEquals($this->data()['content'], $todo->content);
     }
 
     protected function data(array $modifiers = []): array

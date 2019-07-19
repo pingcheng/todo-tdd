@@ -2,13 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="22397767-b76d-4592-a206-df57e2dc9dca" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/php-test-framework.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Exceptions/Handler.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Exceptions/Handler.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/TodoListController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/TodoListController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Kernel.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/Feature/TodoListTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/TodoListTest.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -40,10 +33,30 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tests/Feature/TodoListTest.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="344">
-              <caret line="105" column="37" selection-start-line="105" selection-start-column="37" selection-end-line="105" selection-end-column="37" />
+            <state relative-caret-position="690">
+              <caret line="150" lean-forward="true" selection-start-line="150" selection-end-line="150" />
               <folding>
                 <element signature="e#33#51#0#PHP" expanded="true" />
+                <element signature="e#222#246#0#PHP" />
+                <element signature="e#251#492#0#PHP" />
+                <element signature="e#498#522#0#PHP" />
+                <element signature="e#527#766#0#PHP" />
+                <element signature="e#772#796#0#PHP" />
+                <element signature="e#801#1043#0#PHP" />
+                <element signature="e#1049#1073#0#PHP" />
+                <element signature="e#1078#1464#0#PHP" />
+                <element signature="e#1470#1494#0#PHP" />
+                <element signature="e#1499#1723#0#PHP" />
+                <element signature="e#1729#1753#0#PHP" />
+                <element signature="e#1758#2024#0#PHP" />
+                <element signature="e#2030#2054#0#PHP" />
+                <element signature="e#2059#2305#0#PHP" />
+                <element signature="e#2311#2335#0#PHP" />
+                <element signature="e#2340#2494#0#PHP" />
+                <element signature="e#2924#2948#0#PHP" />
+                <element signature="e#2953#3018#0#PHP" />
+                <element signature="e#2500#2659#0#PHP" />
+                <element signature="e#2968#3010#0#PHP" />
               </folding>
             </state>
           </provider>
@@ -253,7 +266,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="editing.templates" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -267,7 +280,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="PHPUnit.TodoListTest">
+  <component name="RunManager" selected="PHPUnit.TodoListTest.visitor_cannot_update_a_todo">
     <configuration name="TodoListTest" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
       <TestRunner class="Tests\Feature\TodoListTest" file="$PROJECT_DIR$/tests/Feature/TodoListTest.php" scope="Class" />
       <method v="2" />
@@ -280,10 +293,6 @@
       <TestRunner class="Tests\Feature\TodoListTest" file="$PROJECT_DIR$/tests/Feature/TodoListTest.php" method="a_todo_can_be_deleted" scope="Method" />
       <method v="2" />
     </configuration>
-    <configuration name="TodoListTest.a_todo_content_can_be_updated" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Tests\Feature\TodoListTest" file="$PROJECT_DIR$/tests/Feature/TodoListTest.php" method="a_todo_content_can_be_updated" scope="Method" />
-      <method v="2" />
-    </configuration>
     <configuration name="TodoListTest.non_existed_todo_cannot_be_deleted" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
       <TestRunner class="Tests\Feature\TodoListTest" file="$PROJECT_DIR$/tests/Feature/TodoListTest.php" method="non_existed_todo_cannot_be_deleted" scope="Method" />
       <method v="2" />
@@ -292,17 +301,21 @@
       <TestRunner class="Tests\Feature\TodoListTest" file="$PROJECT_DIR$/tests/Feature/TodoListTest.php" method="non_existed_todo_content_cannot_be_updated" scope="Method" />
       <method v="2" />
     </configuration>
+    <configuration name="TodoListTest.visitor_cannot_update_a_todo" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Feature\TodoListTest" file="$PROJECT_DIR$/tests/Feature/TodoListTest.php" method="visitor_cannot_update_a_todo" scope="Method" />
+      <method v="2" />
+    </configuration>
     <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
       <TestRunner scope="XML" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="PHPUnit.TodoListTest.visitor_cannot_update_a_todo" />
         <item itemvalue="PHPUnit.TodoListTest" />
         <item itemvalue="PHPUnit.TodoListTest.non_existed_todo_cannot_be_deleted" />
         <item itemvalue="PHPUnit.TodoListTest.a_todo_can_be_deleted" />
         <item itemvalue="PHPUnit.TodoListTest.non_existed_todo_content_cannot_be_updated" />
-        <item itemvalue="PHPUnit.TodoListTest.a_todo_content_can_be_updated" />
       </list>
     </recent_temporary>
   </component>
@@ -318,20 +331,11 @@
       <updated>1563462897556</updated>
       <workItem from="1563462898793" duration="2767000" />
       <workItem from="1563465687589" duration="1375000" />
-      <workItem from="1563467095330" duration="4950000" />
+      <workItem from="1563467095330" duration="5784000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="TodoListTest_a_todo_can_be_added_to_the_list - 2019.07.19 at 14h 43m 00s.xml">
-      <configuration name="TodoListTest.a_todo_can_be_added_to_the_list" configurationId="PHPUnitRunConfigurationType" />
-    </history-entry>
-    <history-entry file="TodoListTest_a_todo_can_be_added_to_the_list - 2019.07.19 at 14h 45m 03s.xml">
-      <configuration name="TodoListTest.a_todo_can_be_added_to_the_list" configurationId="PHPUnitRunConfigurationType" />
-    </history-entry>
-    <history-entry file="TodoListTest_the_content_cannot_be_empty - 2019.07.19 at 14h 45m 08s.xml">
-      <configuration name="TodoListTest.the_content_cannot_be_empty" configurationId="PHPUnitRunConfigurationType" />
-    </history-entry>
     <history-entry file="TodoListTest_the_content_cannot_be_empty - 2019.07.19 at 14h 45m 28s.xml">
       <configuration name="TodoListTest.the_content_cannot_be_empty" configurationId="PHPUnitRunConfigurationType" />
     </history-entry>
@@ -353,9 +357,18 @@
     <history-entry file="TodoListTest_a_todo_can_be_deleted - 2019.07.19 at 15h 03m 29s.xml">
       <configuration name="TodoListTest.a_todo_can_be_deleted" configurationId="PHPUnitRunConfigurationType" />
     </history-entry>
+    <history-entry file="TodoListTest_non_existed_todo_cannot_be_deleted - 2019.07.19 at 15h 04m 00s.xml">
+      <configuration name="TodoListTest.non_existed_todo_cannot_be_deleted" configurationId="PHPUnitRunConfigurationType" />
+    </history-entry>
+    <history-entry file="TodoListTest - 2019.07.19 at 15h 04m 03s.xml">
+      <configuration name="TodoListTest" configurationId="PHPUnitRunConfigurationType" />
+    </history-entry>
+    <history-entry file="TodoListTest_visitor_cannot_update_a_todo - 2019.07.19 at 15h 11m 10s.xml">
+      <configuration name="TodoListTest.visitor_cannot_update_a_todo" configurationId="PHPUnitRunConfigurationType" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9092000" />
+    <option name="totallyTimeSpent" value="9926000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -370,13 +383,13 @@
     <frame x="0" y="23" width="1920" height="993" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25452608" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25452608" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3299435" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3299435" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -591,12 +604,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.styleci.yml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/tests/Feature/TodoListTest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="344">
-          <caret line="105" column="37" selection-start-line="105" selection-start-column="37" selection-end-line="105" selection-end-column="37" />
+        <state relative-caret-position="690">
+          <caret line="150" lean-forward="true" selection-start-line="150" selection-end-line="150" />
           <folding>
             <element signature="e#33#51#0#PHP" expanded="true" />
+            <element signature="e#222#246#0#PHP" />
+            <element signature="e#251#492#0#PHP" />
+            <element signature="e#498#522#0#PHP" />
+            <element signature="e#527#766#0#PHP" />
+            <element signature="e#772#796#0#PHP" />
+            <element signature="e#801#1043#0#PHP" />
+            <element signature="e#1049#1073#0#PHP" />
+            <element signature="e#1078#1464#0#PHP" />
+            <element signature="e#1470#1494#0#PHP" />
+            <element signature="e#1499#1723#0#PHP" />
+            <element signature="e#1729#1753#0#PHP" />
+            <element signature="e#1758#2024#0#PHP" />
+            <element signature="e#2030#2054#0#PHP" />
+            <element signature="e#2059#2305#0#PHP" />
+            <element signature="e#2311#2335#0#PHP" />
+            <element signature="e#2340#2494#0#PHP" />
+            <element signature="e#2924#2948#0#PHP" />
+            <element signature="e#2953#3018#0#PHP" />
+            <element signature="e#2500#2659#0#PHP" />
+            <element signature="e#2968#3010#0#PHP" />
           </folding>
         </state>
       </provider>
