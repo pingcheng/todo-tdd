@@ -6,7 +6,6 @@ use App\Todo\Todo;
 use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Throwable;
 
 class TodoListTest extends TestCase
 {
