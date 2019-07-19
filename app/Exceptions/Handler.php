@@ -2,8 +2,12 @@
 
 namespace App\Exceptions;
 
+use App\Exceptions\ApiExceptions\ApiException;
 use Exception;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
@@ -46,6 +50,47 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+
+        if ($request->expectsJson()) {
+            return $this->commonJsonExceptionHandler($request, $exception);
+        }
+
         return parent::render($request, $exception);
+    }
+
+    protected function commonJsonExceptionHandler($request, Exception $exception) {
+        switch (get_class($exception)) {
+
+            case ValidationException::class:
+                /** @var $exception ValidationException */
+                return response()->json([
+                    'code' => 422,
+                    'data' => $exception->errors()
+                ], 422);
+
+            case ApiException::class:
+                return response()->json([
+                    'code' => $exception->getCode(),
+                    'data' => $exception->getMessage(),
+                ], $exception->getCode());
+
+            case AuthenticationException::class:
+                return response()->json([
+                    'code' => 401,
+                    'data' => 'unauthenticated'
+                ], 401);
+
+            case ModelNotFoundException::class:
+                return response()->json([
+                   'data' => 'model is not found',
+                   'code' => 404,
+                ], 404);
+
+            default:
+                return response()->json([
+                'data' => 'unknown error',
+                'code' => 500,
+            ], 500);
+        }
     }
 }

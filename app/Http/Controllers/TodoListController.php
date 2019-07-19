@@ -8,6 +8,13 @@ use Illuminate\Validation\ValidationException;
 
 class TodoListController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('api');
+        $this->middleware('auth');
+    }
+
     /**
      * @throws ValidationException
      */

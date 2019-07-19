@@ -14,3 +14,6 @@
 Route::post('todo', 'TodoListController@store');
 Route::patch('todo/{todo}', 'TodoListController@update');
 Route::delete('todo/{todo}', 'TodoListController@delete');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

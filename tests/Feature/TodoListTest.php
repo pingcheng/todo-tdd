@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Todo\Todo;
+use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Throwable;
@@ -17,7 +18,7 @@ class TodoListTest extends TestCase
      */
     public function a_todo_can_be_added_to_the_list(): void
     {
-        $response = $this->post('todo', $this->data());
+        $response = $this->actingAs($this->user())->post('todo', $this->data());
 
         $response->assertOk();
         $this->assertCount(1, Todo::all());
@@ -28,11 +29,13 @@ class TodoListTest extends TestCase
      */
     public function the_content_cannot_be_empty(): void
     {
-        $response = $this->post('todo', $this->data([
+        $response = $this->actingAs($this->user())->post('todo', $this->data([
             'content' => ''
         ]));
 
-        $response->assertSessionHasErrors('content');
+        $response->assertStatus(422);
+        $json = $response->json('data');
+        $this->assertArrayHasKey('content', $json);
     }
 
     /**
@@ -40,11 +43,13 @@ class TodoListTest extends TestCase
      */
     public function the_content_cannot_more_than_255_chars(): void
     {
-        $response = $this->post('todo', $this->data([
+        $response = $this->actingAs($this->user())->post('todo', $this->data([
             'content' => str_repeat('a', 256)
         ]));
 
-        $response->assertSessionHasErrors('content');
+        $response->assertStatus(422);
+        $json = $response->json('data');
+        $this->assertArrayHasKey('content', $json);
     }
 
     /**
@@ -52,10 +57,14 @@ class TodoListTest extends TestCase
      */
     public function a_todo_content_can_be_updated(): void
     {
-        $this->post('todo', $this->data());
-        $todo = Todo::find(1);
 
-        $response = $this->patch("todo/{$todo->id}", $this->data([
+        $user = $this->user();
+
+        $this->actingAs($user)->post('todo', $this->data());
+        $todo = Todo::find(1);
+        $this->assertNotNull($todo);
+
+        $response = $this->actingAs($user)->patch("todo/{$todo->id}", $this->data([
             'content' => 'the new content'
         ]));
         $todo->refresh();
@@ -69,7 +78,7 @@ class TodoListTest extends TestCase
      */
     public function non_existed_todo_content_cannot_be_updated(): void
     {
-        $response = $this->patch('todo/133', $this->data());
+        $response = $this->actingAs($this->user())->patch('todo/133', $this->data());
 
         $response->assertNotFound();
         $this->assertEquals(0, Todo::count());
@@ -80,8 +89,9 @@ class TodoListTest extends TestCase
      */
     public function a_todo_can_be_deleted(): void
     {
-        $this->post('todo', $this->data());
+        $this->actingAs($this->user())->post('todo', $this->data());
         $todo = Todo::first();
+        $this->assertNotNull($todo);
 
         $response = $this->delete("todo/{$todo->id}");
         $response->assertOk();
@@ -93,11 +103,20 @@ class TodoListTest extends TestCase
      */
     public function non_existed_todo_cannot_be_deleted(): void
     {
-        $this->post('todo', $this->data());
+        $this->actingAs($this->user())->post('todo', $this->data());
 
         $response = $this->delete('todo/123');
         $response->assertNotFound();
         $this->assertEquals(1, Todo::count());
+    }
+
+    /**
+     * @test
+     */
+    public function visitor_cannot_add_a_todo(): void
+    {
+        $result = $this->post('todo', $this->data());
+        $result->assertUnauthorized();
     }
 
     protected function data(array $modifiers = []): array
@@ -105,5 +124,9 @@ class TodoListTest extends TestCase
         return array_merge([
             'content' => 'a simple todo'
         ], $modifiers);
+    }
+
+    protected function user() {
+        return factory(User::class)->create();
     }
 }
