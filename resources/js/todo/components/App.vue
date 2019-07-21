@@ -1,26 +1,44 @@
 <template>
-    <div class="px-2">
+    <div class="px-2" v-if="userName">
         <div class="container py-4 flex justify-between">
             <div class="bg-black text-white px-4 py-1 rounded cursor-pointer">Todo</div>
 
-            <div class="filter-shadow opacity-50 cursor-pointer text-sm pt-1">
-                <img class="h-6 rounded-full inline-block" src="https://lh5.googleusercontent.com/-b0On2el7UEA/AAAAAAAAAAI/AAAAAAAAAT4/iN-Eb_Z0JOc/photo.jpg">
-                <span class="">Ping Cheng</span>
+            <div v-if="userName" class="filter-shadow opacity-50 cursor-pointer text-sm pt-1">
+                <img class="h-6 rounded-full inline-block" :src="userAvatar">
+                <span class="">{{ userName }}</span>
             </div>
         </div>
 
         <router-view></router-view>
     </div>
+
+    <div v-else class="text-center pt-10 text-gray-600 font-bold text-lg">Loading...</div>
 </template>
 
 <script>
+	import ApiClient from "../../lib/ApiClient";
+
 	export default {
 		name: "App",
 
         data() {
 			return {
 				title: 'good',
+                userName: false,
+                userAvatar: '',
             }
+        },
+
+        async mounted() {
+			let response;
+			try {
+				response = (await ApiClient.get('/api/user/info')).data;
+			} catch (e) {
+                alert('failed to get user\'s information!');
+			}
+
+			this.userName = response.name;
+			this.userAvatar = response.avatar;
         }
 	}
 </script>

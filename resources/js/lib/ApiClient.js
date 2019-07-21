@@ -6,6 +6,7 @@ function ajax(options) {
 		const client = axios.create({
 			headers: {
 				'Content-Type': 'application/json',
+				'Accept': 'application/json',
 			},
 			withCredentials: true,
 			timeout: 30000,
