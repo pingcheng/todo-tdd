@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ApiExceptions\ApiException;
 use App\Exceptions\ApiExceptions\ApiForbiddenException;
 use App\Todo\Todo;
 use Exception;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
+use PingCheng\ApiResponse\ApiResponse;
 
 class TodoListController extends Controller
 {
@@ -62,6 +65,31 @@ class TodoListController extends Controller
     public function delete(Todo $todo): void
     {
         $todo->delete();
+    }
+
+    /**
+     * @return Response
+     * @throws ApiException
+     */
+    public function list(): Response
+    {
+        $after = filter_var(request()->get('after', 0), FILTER_VALIDATE_INT);
+        if ($after === false) {
+            throw new ApiException('after must be an integer');
+        }
+
+        if ($after < 0) {
+            $after = 0;
+        }
+
+        $user = auth()->user();
+
+        $todo_items = Todo::where('user_id', $user->id)
+            ->where('id', '>', $after)
+            ->take((new Todo)->getPerPage())
+            ->get();
+
+        return ApiResponse::ok($todo_items);
     }
 
     /**

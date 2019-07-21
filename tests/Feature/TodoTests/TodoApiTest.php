@@ -4,6 +4,7 @@ namespace Tests\Feature\TodoTests;
 
 use App\Todo\Todo;
 use App\User;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -162,14 +163,66 @@ class TodoApiTest extends TestCase
         $this->assertEquals($this->data()['content'], $todo->content);
     }
 
+    /**
+     * @test
+     */
+    public function visitor_cannot_load_todo_list(): void
+    {
+        $response = $this->get(route('todo.api.list'));
+        $response->assertUnauthorized();
+        $json = $this->assertValidApiResponse($response);
+        $this->assertEquals(401, $json['status_code']);
+    }
+
+    /**
+     * @test
+     */
+    public function user_can_load_todo_list(): void
+    {
+        $user = $this->user();
+        $this->actingAs($user);
+        $target = 20;
+
+        for ($i=0; $i<$target; $i++) {
+            $this->post(route('todo.api.add'), $this->data());
+        }
+
+        $this->assertEquals($target, Todo::count());
+        $response = $this->get(route('todo.api.list'));
+        $response->assertOk();
+        $json = $this->assertValidApiResponse($response);
+        $this->assertCount($target, $json['data']);
+    }
+
+    /**
+     * @test
+     */
+    public function user_can_load_todo_list_after_certain_id(): void
+    {
+        $this->withoutMiddleware(ThrottleRequests::class);
+
+        $limit = (new Todo())->getPerPage();
+        $target = $limit * 2 + 1;
+        $this->actingAs($this->user());
+
+        for ($i=0; $i<$target; $i++) {
+            $this->post(route('todo.api.add'), $this->data());
+        }
+
+        $this->assertEquals($target, Todo::count());
+
+        $response = $this->get(route('todo.api.list', [
+            'after' => $limit * 2
+        ]));
+        $response->assertOk();
+        $json = $this->assertValidApiResponse($response);
+        $this->assertCount(1, $json['data']);
+    }
+
     protected function data(array $modifiers = []): array
     {
         return array_merge([
             'content' => 'a simple todo'
         ], $modifiers);
-    }
-
-    protected function user() {
-        return factory(User::class)->create();
     }
 }

@@ -11,4 +11,8 @@ class Todo extends Model
     protected $casts = [
         'user_id' => 'int'
     ];
+
+    protected $visible = ['id', 'content'];
+
+    protected $perPage = 30;
 }
