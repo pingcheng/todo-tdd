@@ -7,7 +7,7 @@ use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class TodoListTest extends TestCase
+class TodoApiTest extends TestCase
 {
 
     use RefreshDatabase;
@@ -20,7 +20,7 @@ class TodoListTest extends TestCase
         $this->withoutExceptionHandling();
 
         $user = $this->user();
-        $response = $this->actingAs($user)->post('todo', $this->data());
+        $response = $this->actingAs($user)->post(route('todo.api.add'), $this->data());
 
         $response->assertOk();
         $this->assertCount(1, Todo::all());
@@ -34,7 +34,7 @@ class TodoListTest extends TestCase
      */
     public function the_content_cannot_be_empty(): void
     {
-        $response = $this->actingAs($this->user())->post('todo', $this->data([
+        $response = $this->actingAs($this->user())->post(route('todo.api.add'), $this->data([
             'content' => ''
         ]));
 
@@ -48,7 +48,7 @@ class TodoListTest extends TestCase
      */
     public function the_content_cannot_more_than_255_chars(): void
     {
-        $response = $this->actingAs($this->user())->post('todo', $this->data([
+        $response = $this->actingAs($this->user())->post(route('todo.api.add'), $this->data([
             'content' => str_repeat('a', 256)
         ]));
 
@@ -65,11 +65,11 @@ class TodoListTest extends TestCase
 
         $user = $this->user();
 
-        $this->actingAs($user)->post('todo', $this->data());
+        $this->actingAs($user)->post(route('todo.api.add'), $this->data());
         $todo = Todo::find(1);
         $this->assertNotNull($todo);
 
-        $response = $this->actingAs($user)->patch("todo/{$todo->id}", $this->data([
+        $response = $this->actingAs($user)->patch(route('todo.api.update', [$todo->id]), $this->data([
             'content' => 'the new content'
         ]));
         $todo->refresh();
@@ -83,7 +83,7 @@ class TodoListTest extends TestCase
      */
     public function non_existed_todo_content_cannot_be_updated(): void
     {
-        $response = $this->actingAs($this->user())->patch('todo/133', $this->data());
+        $response = $this->actingAs($this->user())->patch(route('todo.api.update', [133]), $this->data());
 
         $response->assertNotFound();
         $this->assertEquals(0, Todo::count());
@@ -97,11 +97,11 @@ class TodoListTest extends TestCase
         $user = $this->user();
         $attacker = $this->user();
 
-        $this->actingAs($user)->post('todo', $this->data());
+        $this->actingAs($user)->post(route('todo.api.add'), $this->data());
         $todo = Todo::first();
         $this->assertNotNull($todo);
 
-        $response = $this->actingAs($attacker)->patch("todo/{$todo->id}", $this->data([
+        $response = $this->actingAs($attacker)->patch(route('todo.api.update', [$todo->id]), $this->data([
             'content' => 'new content',
         ]));
         $response->assertForbidden();
@@ -114,11 +114,11 @@ class TodoListTest extends TestCase
      */
     public function a_todo_can_be_deleted(): void
     {
-        $this->actingAs($this->user())->post('todo', $this->data());
+        $this->actingAs($this->user())->post(route('todo.api.add'), $this->data());
         $todo = Todo::first();
         $this->assertNotNull($todo);
 
-        $response = $this->delete("todo/{$todo->id}");
+        $response = $this->delete(route('todo.api.delete', [$todo->id]));
         $response->assertOk();
         $this->assertEquals(0, Todo::count());
     }
@@ -128,9 +128,9 @@ class TodoListTest extends TestCase
      */
     public function non_existed_todo_cannot_be_deleted(): void
     {
-        $this->actingAs($this->user())->post('todo', $this->data());
+        $this->actingAs($this->user())->post(route('todo.api.add'), $this->data());
 
-        $response = $this->delete('todo/123');
+        $response = $this->delete(route('todo.api.delete', [123]));
         $response->assertNotFound();
         $this->assertEquals(1, Todo::count());
     }
@@ -140,7 +140,7 @@ class TodoListTest extends TestCase
      */
     public function visitor_cannot_add_a_todo(): void
     {
-        $result = $this->post('todo', $this->data());
+        $result = $this->post(route('todo.api.add'), $this->data());
         $result->assertUnauthorized();
         $this->assertEquals(0, Todo::count());
     }
@@ -150,10 +150,10 @@ class TodoListTest extends TestCase
      */
     public function visitor_cannot_update_a_todo(): void
     {
-        $this->actingAs($this->user())->post('todo', $this->data());
+        $this->actingAs($this->user())->post(route('todo.api.add'), $this->data());
         auth()->logout();
 
-        $response = $this->patch('todo/123', [
+        $response = $this->patch(route('todo.api.update', [123]), [
             'content' => 'good'
         ]);
         $todo = Todo::first();
