@@ -19,6 +19,8 @@ before_script:
 
 script:
   - vendor/bin/phpunit
+  - npm install
+  - npm run production
 
 after_success:
   - vendor/bin/php-coveralls -v
