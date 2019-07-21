@@ -3,12 +3,10 @@
 namespace Tests\Feature\TodoTests;
 
 use App\Todo\Todo;
-use App\User;
 use Illuminate\Routing\Middleware\ThrottleRequests;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class TodoApiTest extends TestCase
+class TodoApiTest extends TodoApiTestCase
 {
 
     use RefreshDatabase;
@@ -217,12 +215,5 @@ class TodoApiTest extends TestCase
         $response->assertOk();
         $json = $this->assertValidApiResponse($response);
         $this->assertCount(1, $json['data']);
-    }
-
-    protected function data(array $modifiers = []): array
-    {
-        return array_merge([
-            'content' => 'a simple todo'
-        ], $modifiers);
     }
 }

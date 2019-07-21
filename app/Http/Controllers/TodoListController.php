@@ -93,6 +93,46 @@ class TodoListController extends Controller
     }
 
     /**
+     * @param Todo $todo
+     *
+     * @return Response
+     * @throws ApiForbiddenException
+     */
+    public function done(Todo $todo): Response
+    {
+        $user_id = auth()->id();
+
+        if ($todo->user_id !== $user_id) {
+            throw new ApiForbiddenException();
+        }
+
+        $todo->done_at = now();
+        $todo->save();
+
+        return ApiResponse::ok('marked as done');
+    }
+
+    /**
+     * @param Todo $todo
+     *
+     * @return Response
+     * @throws ApiForbiddenException
+     */
+    public function undone(Todo $todo): Response
+    {
+        $user_id = auth()->id();
+
+        if ($todo->user_id !== $user_id) {
+            throw new ApiForbiddenException();
+        }
+
+        $todo->done_at = null;
+        $todo->save();
+
+        return ApiResponse::ok('marked as undone');
+    }
+
+    /**
      * @return mixed
      * @throws ValidationException
      */
