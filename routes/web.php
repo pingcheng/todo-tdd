@@ -17,3 +17,5 @@ Route::delete('todo/{todo}', 'TodoListController@delete');
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider');
+Route::get('login/{provider}/handle','Auth\LoginController@handleProviderCallback');
