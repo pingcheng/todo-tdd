@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class ApiResponse
+class ApiResponsible
 {
     /**
      * Handle an incoming request.

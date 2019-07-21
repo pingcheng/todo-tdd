@@ -8,6 +8,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
+use PingCheng\ApiResponse\ApiResponse;
 
 class Handler extends ExceptionHandler
 {
@@ -63,35 +64,20 @@ class Handler extends ExceptionHandler
 
             case ValidationException::class:
                 /** @var $exception ValidationException */
-                return response()->json([
-                    'code' => 422,
-                    'data' => $exception->errors()
-                ], 422);
+                return ApiResponse::message(422, $exception->errors());
 
             case AuthenticationException::class:
-                return response()->json([
-                    'code' => 401,
-                    'data' => 'unauthenticated'
-                ], 401);
+                return ApiResponse::unauthorized('unauthenticated');
 
             case ModelNotFoundException::class:
-                return response()->json([
-                   'data' => 'model is not found',
-                   'code' => 404,
-                ], 404);
+                return ApiResponse::notFound('model is not found');
         }
 
 
         if (is_a($exception, ApiException::class)) {
-            return response()->json([
-                'code' => $exception->getCode(),
-                'data' => $exception->getMessage(),
-            ], $exception->getCode());
+            return ApiResponse::message($exception->getCode(), $exception->getMessage());
         }
 
-        return response()->json([
-            'data' => 'unknown error',
-            'code' => 500,
-        ], 500);
+        return ApiResponse::internalServerError('unknown error');
     }
 }

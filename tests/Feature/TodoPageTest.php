@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -28,10 +27,5 @@ class TodoPageTest extends TestCase
         $response = $this->actingAs($this->user())->get(route('todo.index'));
         $response->assertOk();
         $response->assertViewIs('todo.index');
-    }
-
-    private function user()
-    {
-        return factory(User::class)->create();
     }
 }

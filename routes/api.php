@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::get('api/user/info', 'UserApiController@info')->name('user.api.info');
+
 Route::post('api/todo', 'TodoListController@store')->name('todo.api.add');
 Route::patch('api/todo/{todo}', 'TodoListController@update')->name('todo.api.update');
 Route::delete('api/todo/{todo}', 'TodoListController@delete')->name('todo.api.delete');

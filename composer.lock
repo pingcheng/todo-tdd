@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7fa716b7f74911687ddce373ed2e4fbf",
+    "content-hash": "607e16c515502f142a6d3ea761ea1f7f",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1506,6 +1506,42 @@
                 "type"
             ],
             "time": "2015-07-25T16:39:46+00:00"
+        },
+        {
+            "name": "pingcheng/api-response-laravel",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pingcheng/api-response-laravel.git",
+                "reference": "600154faf9b9c4946cf0da35f79378e4ccb10273"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pingcheng/api-response-laravel/zipball/600154faf9b9c4946cf0da35f79378e4ccb10273",
+                "reference": "600154faf9b9c4946cf0da35f79378e4ccb10273",
+                "shasum": ""
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^8.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PingCheng\\ApiResponse\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ping Cheng",
+                    "email": "ping.che@hotmail.com"
+                }
+            ],
+            "time": "2019-05-12T13:20:40+00:00"
         },
         {
             "name": "psr/container",
