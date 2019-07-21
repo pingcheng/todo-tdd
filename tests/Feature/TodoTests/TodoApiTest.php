@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\TodoTests;
 
 use App\Todo\Todo;
 use App\User;
