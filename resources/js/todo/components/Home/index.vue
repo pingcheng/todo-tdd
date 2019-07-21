@@ -10,23 +10,29 @@
             <div class="mb-4">
                 <label class="text-sm text-gray-500 font-bold">Todo</label>
 
-                <div v-for="(todo, index) in todoItems" :key="index">
-                    <div class="border border-gray-400 p-3 mb-1 bg-white hover:bg-blue-100 cursor-pointer" @click="toggleTodoCompletion(index)">
+                <div v-if="todoItems.length > 0">
+                    <div v-for="(todo, index) in todoItems" :key="index">
+                        <div class="border border-gray-400 p-3 mb-1 bg-white hover:bg-blue-100 cursor-pointer" @click="toggleTodoCompletion(index)">
 
-                        <div class="float-right" :class="{
-                            'text-gray-500': todo.done
-                        }">
-                            <i class="fas fa-trash" @click.stop="deleteTodo(index)"></i>
-                        </div>
+                            <div class="float-right" :class="{
+                                'text-gray-500': todo.done
+                            }">
+                                <i class="fas fa-trash" @click.stop="deleteTodo(index)"></i>
+                            </div>
 
-                        <div :class="{
-                            'text-gray-500': todo.done
-                        }">
-                            <i v-if="!todo.done" class="far fa-square mr-2"></i>
-                            <i v-else class="far fa-check-square mr-2"></i>
-                            {{ todo.text }}
+                            <div :class="{
+                                'text-gray-500': todo.done
+                            }">
+                                <i v-if="!todo.done" class="far fa-square mr-2"></i>
+                                <i v-else class="far fa-check-square mr-2"></i>
+                                {{ todo.content }}
+                            </div>
                         </div>
                     </div>
+                </div>
+
+                <div v-else class="text-gray-700">
+                    No todo items yet! Add one now!
                 </div>
             </div>
         </div>
@@ -45,50 +51,49 @@
 			return {
 				loaded: false,
 				newTodo: '',
-				todoItems: [
-                    {
-                        text: 'hello',
-                        done: false,
-                    },
-                    {
-                        text: 'tomorrow is a good thing',
-                        done: false,
-                    },
-                    {
-                        text: 'how are you',
-                        done: true
-                    }
-                ]
+				todoItems: []
             }
         },
 
         methods: {
 			toggleTodoCompletion(index) {
 				this.todoItems[index].done = !this.todoItems[index].done;
-				console.log(index);
             },
 
-            addTodo() {
+            async addTodo() {
 				let todo = this.newTodo.trim();
 
 				if (todo === '') {
 					return;
                 }
 
-				this.todoItems.push({
-                    text: todo,
-                    done: false,
-                });
+                try {
+					await ApiClient.post('/api/todo', {
+						content: todo
+                    });
+                } catch (e) {
+                    alert(e.data);
+                }
 
 				this.newTodo = '';
+				this.loadTodoItems();
             },
 
-            deleteTodo(index) {
-				this.todoItems.splice(index, 1);
+            async deleteTodo(index) {
+				let item = this.todoItems[index];
+
+				try {
+					ApiClient.delete(`/api/todo/${item.id}`);
+                } catch (e) {
+                    alert(e.data);
+				}
+
+				this.loadTodoItems();
             },
 
             async loadTodoItems() {
 				let response;
+				let todo = [];
 
                 try {
 					response = (await ApiClient.get('/api/todo')).data;
@@ -96,7 +101,16 @@
                     alert('load todo list failed: ' + e.data);
                 }
 
-                console.log(response);
+                for (let item of response) {
+                    todo.push({
+                        id: item.id,
+                        content: item.content,
+                        done: false,
+                    })
+                }
+
+                this.todoItems = todo;
+                this.loaded = true;
             },
         },
 
