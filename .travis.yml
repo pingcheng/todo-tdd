@@ -18,9 +18,9 @@ before_script:
   - touch database/database.sqlite
 
 script:
-  - vendor/bin/phpunit
   - npm install
   - npm run production
+  - vendor/bin/phpunit
 
 after_success:
   - vendor/bin/php-coveralls -v
