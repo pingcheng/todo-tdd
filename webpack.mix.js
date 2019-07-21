@@ -14,6 +14,7 @@ require('laravel-mix-purgecss');
  */
 
 mix.js('resources/js/app.js', 'public/js')
+   .js('resources/js/todo/app.js', 'public/js/todo.js')
    .sass('resources/sass/app.scss', 'public/css')
    .options({
       processCssUrls: false,
@@ -21,4 +22,5 @@ mix.js('resources/js/app.js', 'public/js')
         tailwindcss('./tailwind.config.js')
       ]
    })
-   .purgeCss();
+   .purgeCss()
+   .version();

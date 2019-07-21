@@ -12,8 +12,17 @@ class TodoListController extends Controller
 
     public function __construct()
     {
-        $this->middleware('api');
+        $this->middleware('api', [
+            'except' => [
+                'index'
+            ]
+        ]);
         $this->middleware('auth');
+    }
+
+    public function index()
+    {
+        return view('todo.index');
     }
 
     /**

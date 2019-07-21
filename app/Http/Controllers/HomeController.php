@@ -19,11 +19,13 @@ class HomeController extends Controller
 
     /**
      * Show the application dashboard.
-     *
-     * @return Renderable
      */
     public function index()
     {
+        if (auth()->check()) {
+            return redirect(route('todo.index'));
+        }
+
         return view('index.index');
     }
 }
