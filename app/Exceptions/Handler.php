@@ -7,9 +7,11 @@ use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use PingCheng\ApiResponse\ApiResponse;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -48,7 +50,7 @@ class Handler extends ExceptionHandler
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function render($request, Exception $exception)
     {
@@ -60,7 +62,8 @@ class Handler extends ExceptionHandler
         return parent::render($request, $exception);
     }
 
-    protected function commonJsonExceptionHandler($request, Exception $exception) {
+    protected function commonJsonExceptionHandler($request, Exception $exception): Response
+    {
         switch (get_class($exception)) {
 
             case ValidationException::class:
@@ -74,7 +77,10 @@ class Handler extends ExceptionHandler
                 return ApiResponse::notFound('model is not found');
 
             case MethodNotAllowedHttpException::class:
-                return ApiResponse::notFound('api endpoint is not define');
+                return ApiResponse::message(405, 'api endpoint method is not allowed');
+
+            case NotFoundHttpException::class:
+                return ApiResponse::notFound('api endpoint is not defined');
         }
 
 
