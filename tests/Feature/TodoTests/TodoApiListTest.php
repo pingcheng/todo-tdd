@@ -82,7 +82,7 @@ class TodoApiListTest extends TodoApiTestCase
     /**
      * @test
      */
-    public function user_can_load_todo_list_with_negetive_after_id(): void
+    public function user_can_load_todo_list_with_negative_after_id(): void
     {
         $this->actingAs($this->user());
 
