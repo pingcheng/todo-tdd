@@ -45,6 +45,21 @@ class TodoApiListTest extends TodoApiTestCase
     /**
      * @test
      */
+    public function todo_item_must_contain_these_fields(): void
+    {
+        $this->withoutExceptionHandling();
+        $this->actingAs($this->user())->post(route('todo.api.add'), $this->data());
+        $response = $this->get(route('todo.api.list'));
+        $todo = $this->assertValidApiResponse($response, 200)['data'][0];
+
+        $this->assertIsInt($todo['id']);
+        $this->assertIsString($todo['content']);
+        $this->assertIsInt($todo['done_at']);
+    }
+
+    /**
+     * @test
+     */
     public function user_can_load_todo_list_after_certain_id(): void
     {
         $this->withoutMiddleware(ThrottleRequests::class);

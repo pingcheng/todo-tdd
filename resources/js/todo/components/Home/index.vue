@@ -10,6 +10,13 @@
             <div class="mb-4">
                 <label class="text-sm text-gray-500 font-bold">Todo</label>
 
+                <div>
+                    <ul class="nav">
+                        <li :class="{active: tab === 'todo'}" @click="switchTab('todo')">Todo</li>
+                        <li :class="{active: tab === 'done'}" @click="switchTab('done')">Done</li>
+                    </ul>
+                </div>
+
                 <div v-if="todoItems.length > 0">
                     <div v-for="(todo, index) in todoItems" :key="index">
                         <div class="border border-gray-400 p-3 mb-1 bg-white hover:bg-blue-100 cursor-pointer" @click="toggleTodoCompletion(index)">
@@ -50,12 +57,18 @@
         data() {
 			return {
 				loaded: false,
+                tab: 'todo',
 				newTodo: '',
 				todoItems: []
             }
         },
 
         methods: {
+			switchTab(tab) {
+				this.tab = tab;
+				this.loadTodoItems();
+            },
+
 			async toggleTodoCompletion(index) {
 				let oldStatus = this.todoItems[index].done;
 				let changeTo = oldStatus ? 'undone' : 'done';
@@ -114,7 +127,11 @@
 				let todo = [];
 
                 try {
-					response = (await ApiClient.get('/api/todo')).data;
+                    if (this.tab === 'todo') {
+                        response = (await ApiClient.get('/api/todo')).data;
+                    } else {
+                        response = (await ApiClient.get('/api/todo?filter=done')).data;
+                    }
                 } catch (e) {
                     alert('load todo list failed: ' + e.data);
                 }
@@ -123,7 +140,8 @@
                     todo.push({
                         id: item.id,
                         content: item.content,
-                        done: false,
+                        done: item.done_at > 0,
+                        done_at: item.done_at,
                     })
                 }
 
@@ -139,5 +157,19 @@
 </script>
 
 <style scoped>
+    .nav {
+        @apply flex my-4;
+    }
 
+    .nav li {
+        @apply mr-3 px-2 py-1 cursor-pointer rounded;
+    }
+
+    .nav li:hover {
+        @apply bg-blue-200;
+    }
+
+    .nav li.active {
+        @apply bg-blue-400 text-white;
+    }
 </style>
