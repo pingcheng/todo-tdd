@@ -17,7 +17,7 @@ class CreateTodosTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->string('content');
-            $table->integer('done_at')->nullable();
+            $table->timestamp('done_at')->nullable();
             $table->timestamps();
         });
     }
