@@ -88,6 +88,10 @@ class Handler extends ExceptionHandler
             return ApiResponse::message($exception->getCode(), $exception->getMessage());
         }
 
-        return ApiResponse::internalServerError('unknown error');
+        if (app()->environment('production')) {
+            return ApiResponse::internalServerError('unknown error');
+        }
+
+        return ApiResponse::internalServerError($exception->getMessage());
     }
 }
