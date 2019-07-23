@@ -56,8 +56,26 @@
         },
 
         methods: {
-			toggleTodoCompletion(index) {
-				this.todoItems[index].done = !this.todoItems[index].done;
+			async toggleTodoCompletion(index) {
+				let oldStatus = this.todoItems[index].done;
+				let changeTo = oldStatus ? 'undone' : 'done';
+				let response;
+
+				this.todoItems[index].done = !oldStatus;
+
+				try {
+					response = await ApiClient.post(`/api/todo/${this.todoItems[index].id}/${changeTo}`)
+                } catch (e) {
+                    alert(e.data);
+					this.todoItems[index].done = oldStatus;
+                    return;
+				}
+
+				console.log(response);
+
+				if (response.status_code !== 200) {
+					this.todoItems[index].done = oldStatus;
+                }
             },
 
             async addTodo() {
