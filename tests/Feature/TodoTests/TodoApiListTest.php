@@ -97,4 +97,40 @@ class TodoApiListTest extends TodoApiTestCase
         $json = $this->assertValidApiResponse($response, 200);
         $this->assertCount(3, $json['data']);
     }
+
+    /**
+     * @test
+     */
+    public function user_cannot_load_with_unrecognised_filter(): void
+    {
+        $this->actingAs($this->user());
+        $response = $this->get(route('todo.api.list', [
+            'filter' => 'random_filter',
+        ]));
+        $this->assertValidApiResponse($response, 400);
+    }
+
+    /**
+     * @test
+     */
+    public function user_can_load_todo_list_with_done_filter(): void
+    {
+        $user = $this->user();
+        $this->actingAs($user);
+
+        $this->post(route('todo.api.add'), $this->data());
+        $todo = Todo::first();
+
+        $this->post(route('todo.api.add'), $this->data());
+        $this->post(route('todo.api.add'), $this->data());
+        $this->post(route('todo.api.add'), $this->data());
+
+        $this->post(route('todo.api.done', [$todo->id]));
+        $response = $this->get(route('todo.api.list', [
+            'filter' => 'done'
+        ]));
+        $json = $this->assertValidApiResponse($response, 200);
+        $this->assertCount(1, $json['data']);
+        $this->assertEquals($todo->id, $json['data'][0]['id']);
+    }
 }

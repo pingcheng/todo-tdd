@@ -73,7 +73,20 @@ class TodoListController extends Controller
      */
     public function list(): Response
     {
+        $valid_filter = ['done'];
+
         $after = filter_var(request()->get('after', 0), FILTER_VALIDATE_INT);
+
+        // get filter and make sure the filter is valid
+        $filter = strtolower(trim(request()->get('filter')));
+        if ($filter === '') {
+            $filter = null;
+        }
+
+        if ($filter && !in_array($filter, $valid_filter, true)) {
+            throw new ApiException('bad filter');
+        }
+
         if ($after === false) {
             throw new ApiException('after must be an integer');
         }
@@ -84,10 +97,15 @@ class TodoListController extends Controller
 
         $user = auth()->user();
 
-        $todo_items = Todo::where('user_id', $user->id)
+        $query = Todo::where('user_id', $user->id)
             ->where('id', '>', $after)
-            ->take((new Todo)->getPerPage())
-            ->get();
+            ->take((new Todo)->getPerPage());
+
+        if ($filter && $filter === 'done') {
+            $query->whereNotNull('done_at');
+        }
+
+        $todo_items = $query->get();
 
         return ApiResponse::ok($todo_items);
     }
