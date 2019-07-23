@@ -103,6 +103,8 @@ class TodoListController extends Controller
 
         if ($filter && $filter === 'done') {
             $query->whereNotNull('done_at');
+        } else {
+            $query->whereNull('done_at');
         }
 
         $todo_items = $query->get();

@@ -133,4 +133,26 @@ class TodoApiListTest extends TodoApiTestCase
         $this->assertCount(1, $json['data']);
         $this->assertEquals($todo->id, $json['data'][0]['id']);
     }
+
+    /**
+     * @test
+     */
+    public function default_listing_would_not_include_done_items(): void
+    {
+        $this->actingAs($this->user());
+
+        $this->post(route('todo.api.add'), $this->data());
+        $this->post(route('todo.api.add'), $this->data());
+        $this->post(route('todo.api.add'), $this->data());
+        $this->post(route('todo.api.add'), $this->data());
+        $this->post(route('todo.api.add'), $this->data());
+
+        $this->post(route('todo.api.done', [1]));
+        $response = $this->get(route('todo.api.list'));
+        $json = $this->assertValidApiResponse($response, 200);
+
+        $this->assertCount(4, $json['data']);
+        $this->assertEquals(2, current($json['data'])['id']);
+        $this->assertEquals(5, end($json['data'])['id']);
+    }
 }
